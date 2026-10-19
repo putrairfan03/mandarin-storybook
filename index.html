@@ -3,21 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>中文故事精选 · Interactive Storybook</title>
+  <title>中文故事精选 · 3D Flip Storybook</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --book-cover: #7c2d12;
-      --book-spine: #451a03;
-      --gold: #d97706;
-      --gold-light: #fef3c7;
-      --paper: #fefbf3;
-      --paper-border: #e7dec8;
+      --paper: #fefdfa;
+      --paper-border: #e2d9c8;
       --text-main: #27272a;
       --text-title: #78350f;
+      --accent: #f59e0b;
+      --primary: #d97706;
     }
 
     * {
@@ -27,158 +25,115 @@
     }
 
     body {
-      background: radial-gradient(circle at center, #2e1065 0%, #0f172a 60%, #020617 100%);
+      background: radial-gradient(circle at center, #1e1b4b 0%, #0f172a 60%, #030712 100%);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px 10px;
+      padding: 24px 14px;
       font-family: 'Noto Serif SC', serif;
       color: var(--text-main);
       overflow-x: hidden;
     }
 
-    /* Tajuk Atas */
     .top-header {
       text-align: center;
       margin-bottom: 24px;
-      color: #fef08a;
     }
 
     .top-header h1 {
       font-family: 'Ma Shan Zheng', cursive;
-      font-size: 2.5rem;
+      font-size: 2.6rem;
+      color: #fef08a;
       letter-spacing: 4px;
-      text-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+      text-shadow: 0 4px 18px rgba(245, 158, 11, 0.45);
     }
 
     .top-header p {
       font-size: 0.95rem;
       color: #cbd5e1;
-      margin-top: 4px;
+      margin-top: 5px;
       letter-spacing: 1px;
     }
 
-    /* Pentas Buku 3D */
+    /* PENTAS BUKU 3D */
     .stage {
-      perspective: 1800px;
+      perspective: 2200px;
       width: 100%;
-      max-width: 960px;
+      max-width: 980px;
       display: flex;
       justify-content: center;
       position: relative;
     }
 
-    .book {
+    .book-container {
       width: 100%;
       min-height: 520px;
       background: var(--paper);
-      border-radius: 12px 24px 24px 12px;
-      display: flex;
-      position: relative;
+      border-radius: 18px;
       box-shadow: 
-        -15px 15px 30px rgba(0, 0, 0, 0.5),
-        -5px 0 0 0 var(--book-spine),
-        -12px 0 0 2px var(--book-cover),
-        0 18px 40px rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--paper-border);
+        0 20px 45px rgba(0, 0, 0, 0.5),
+        0 0 0 1px var(--paper-border);
+      position: relative;
       overflow: hidden;
+      transform-style: preserve-3d;
     }
 
-    /* Bahagian Tulang Tengah Buku (Book Gutter / Crease) */
-    .book::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      top: 0;
-      bottom: 0;
-      width: 30px;
-      transform: translateX(-50%);
-      background: linear-gradient(90deg, 
-        rgba(0,0,0,0.18) 0%, 
-        rgba(0,0,0,0.03) 40%, 
-        rgba(255,255,255,0.4) 50%, 
-        rgba(0,0,0,0.03) 60%, 
-        rgba(0,0,0,0.18) 100%);
-      pointer-events: none;
-      z-index: 10;
-    }
-
-    /* Reben Penanda Buku */
-    .bookmark-ribbon {
-      position: absolute;
-      top: 0;
-      left: 48%;
-      width: 16px;
-      height: 70px;
-      background: #dc2626;
-      box-shadow: 2px 4px 8px rgba(0,0,0,0.3);
-      z-index: 15;
-      clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
-    }
-
-    /* Dua Muka Surat Terbuka */
+    /* PAPARAN KANDUNGAN (GRID DUA HALAMAN: GAMBAR & TEKS) */
     .page-spread {
       display: grid;
-      grid-template-columns: 1fr 1.15fr;
+      grid-template-columns: 1fr 1.2fr;
       width: 100%;
-      height: 100%;
       min-height: 520px;
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      background: var(--paper);
+      position: relative;
+      z-index: 2;
     }
 
-    /* Helaian Kiri: Ilustrasi Visual */
+    /* HALAMAN KIRI: GAMBAR CERITA */
     .page-left {
-      padding: 35px 30px 30px 40px;
+      padding: 35px 25px 30px 35px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: radial-gradient(circle at 80% 50%, #fff7ed 0%, var(--paper) 100%);
-      border-right: 1px solid rgba(0,0,0,0.08);
-      position: relative;
+      background: #faf6ed;
+      border-right: 1px solid rgba(0, 0, 0, 0.06);
     }
 
     .illustration-frame {
       width: 100%;
-      max-width: 340px;
+      max-width: 330px;
       height: 330px;
-      border-radius: 16px;
+      border-radius: 14px;
       overflow: hidden;
-      border: 4px solid #fff;
-      box-shadow: 0 10px 25px rgba(120, 53, 15, 0.2), 0 0 0 1px #fed7aa;
-      position: relative;
-      transition: transform 0.3s ease;
-    }
-
-    .illustration-frame:hover {
-      transform: scale(1.02);
+      border: 4px solid #ffffff;
+      box-shadow: 0 10px 22px rgba(120, 53, 15, 0.18);
     }
 
     .illustration-frame img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
 
     .chapter-tag {
-      margin-top: 18px;
+      margin-top: 16px;
       font-size: 0.85rem;
       letter-spacing: 2px;
       color: #9a3412;
-      text-transform: uppercase;
       font-weight: 700;
     }
 
-    /* Helaian Kanan: Teks & Cerita */
+    /* HALAMAN KANAN: TEKS BERSIH TANPA SEBARANG PALANG */
     .page-right {
-      padding: 40px 45px 35px 40px;
+      padding: 38px 45px 30px 40px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      position: relative;
-      background: radial-gradient(circle at 20% 50%, #fff7ed 0%, var(--paper) 100%);
+      background: var(--paper);
     }
 
     .story-header {
@@ -186,13 +141,13 @@
       justify-content: space-between;
       align-items: center;
       border-bottom: 2px dashed #fed7aa;
-      padding-bottom: 14px;
-      margin-bottom: 22px;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
     }
 
     .story-title {
       font-family: 'Ma Shan Zheng', cursive;
-      font-size: 2.1rem;
+      font-size: 2.2rem;
       color: var(--text-title);
       letter-spacing: 2px;
     }
@@ -210,7 +165,6 @@
       align-items: center;
       justify-content: center;
       transition: all 0.2s;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
     }
 
     .btn-audio:hover {
@@ -220,8 +174,8 @@
 
     .story-content {
       font-size: 1.18rem;
-      line-height: 2.1;
-      color: #3f3f46;
+      line-height: 2.15;
+      color: #27272a;
       text-align: justify;
       text-justify: inter-ideograph;
       text-indent: 2.4em;
@@ -233,30 +187,85 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 25px;
+      margin-top: 22px;
       padding-top: 12px;
       border-top: 1px solid #f1f5f9;
       font-size: 0.85rem;
-      color: #a1a1aa;
+      color: #71717a;
     }
 
     .page-num {
-      font-style: italic;
-      font-weight: bold;
-      color: #78350f;
+      font-weight: 700;
+      color: #9a3412;
     }
 
-    /* Bar Kawalan Navigasi */
+    /* HELAIAN FLIPBOOK BERPUTAR 3D (OVERLAY SHEET) */
+    .flip-sheet {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 100%;
+      background: var(--paper);
+      transform-origin: left center;
+      z-index: 20;
+      pointer-events: none;
+      display: none;
+      box-shadow: -6px 0 25px rgba(0,0,0,0.25);
+    }
+
+    .flip-sheet.anim-forward {
+      display: block;
+      animation: flipForward 0.65s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+    }
+
+    .flip-sheet.anim-backward {
+      display: block;
+      left: 0;
+      right: auto;
+      transform-origin: right center;
+      animation: flipBackward 0.65s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+    }
+
+    @keyframes flipForward {
+      0% {
+        transform: rotateY(0deg);
+        filter: brightness(1);
+      }
+      50% {
+        filter: brightness(0.85);
+      }
+      100% {
+        transform: rotateY(-180deg);
+        filter: brightness(1);
+      }
+    }
+
+    @keyframes flipBackward {
+      0% {
+        transform: rotateY(0deg);
+        filter: brightness(1);
+      }
+      50% {
+        filter: brightness(0.85);
+      }
+      100% {
+        transform: rotateY(180deg);
+        filter: brightness(1);
+      }
+    }
+
+    /* KAWALAN BUTANG & INDIKATOR */
     .controls {
       display: flex;
       align-items: center;
       gap: 16px;
-      margin-top: 30px;
+      margin-top: 28px;
     }
 
     .nav-btn {
       background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-      color: white;
+      color: #ffffff;
       border: none;
       padding: 12px 24px;
       border-radius: 30px;
@@ -265,9 +274,6 @@
       cursor: pointer;
       box-shadow: 0 6px 18px rgba(217, 119, 6, 0.35);
       transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 8px;
     }
 
     .nav-btn:hover:not(:disabled) {
@@ -277,12 +283,11 @@
 
     .nav-btn:disabled {
       background: #475569;
-      box-shadow: none;
-      opacity: 0.5;
+      opacity: 0.45;
       cursor: not-allowed;
+      box-shadow: none;
     }
 
-    /* Penunjuk Helaian (Dots/Indicators) */
     .page-dots {
       display: flex;
       gap: 8px;
@@ -303,16 +308,13 @@
       box-shadow: 0 0 10px #f59e0b;
     }
 
-    /* Responsif untuk Skrin Telefon */
+    /* RESPONSIF UNTUK TELEFON PINTAR */
     @media (max-width: 800px) {
-      .book {
-        border-radius: 16px;
-      }
-      .book::after, .bookmark-ribbon {
-        display: none;
-      }
       .page-spread {
         grid-template-columns: 1fr;
+      }
+      .flip-sheet {
+        display: none !important;
       }
       .page-left {
         padding: 24px 20px 10px 20px;
@@ -327,7 +329,7 @@
         padding: 20px 20px 24px 20px;
       }
       .story-title {
-        font-size: 1.6rem;
+        font-size: 1.65rem;
       }
       .story-content {
         font-size: 1.05rem;
@@ -340,15 +342,14 @@
 
   <div class="top-header">
     <h1>中文故事精选</h1>
-    <p>Interactive Chinese Reading Book</p>
+    <p>Interactive Chinese 3D Flip Storybook</p>
   </div>
 
   <div class="stage">
-    <div class="book">
-      <div class="bookmark-ribbon"></div>
-      
+    <div class="book-container">
+      <!-- Muka Surat Sebenar -->
       <div class="page-spread" id="pageSpread">
-        <!-- Helaian Kiri: Gambar -->
+        <!-- Halaman Kiri (Gambar) -->
         <div class="page-left">
           <div class="illustration-frame">
             <img id="storyImg" src="" alt="Story Visual">
@@ -356,7 +357,7 @@
           <div class="chapter-tag" id="chapterTag">CHAPTER 01</div>
         </div>
 
-        <!-- Helaian Kanan: Teks Cerita -->
+        <!-- Halaman Kanan (Teks Bersih) -->
         <div class="page-right">
           <div>
             <div class="story-header">
@@ -372,10 +373,13 @@
           </div>
         </div>
       </div>
+
+      <!-- Lapisan Efek Menyelak Kertas 3D -->
+      <div class="flip-sheet" id="flipSheet"></div>
     </div>
   </div>
 
-  <!-- Butang Kawalan Selak Helaian -->
+  <!-- Butang Navigasi Selak Halaman -->
   <div class="controls">
     <button class="nav-btn" id="prevBtn">❮ 上一页 (Sebelum)</button>
     <div class="page-dots" id="dotsContainer"></div>
@@ -383,71 +387,72 @@
   </div>
 
   <script>
-    // Data 10 Cerita dari Google Sheets (Hanya Tajuk & Teks Cerita Hanzi)
+    // 10 Cerita Mandarin dari Google Sheets
     const stories = [
       {
         id: 1,
         title: "我的一天",
-        image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800", // Kehidupan pelajar universiti
+        image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800",
         text: "我叫大卫，是一名大学生。我每天早上七点起床，先刷牙洗脸，然后去学校食堂吃早饭。我最喜欢吃鸡蛋和包子，喝一杯温牛奶。上午我有两节汉语课，老师教我们读生字和练习写汉字。下午下课后，我常常和同班同学一起在操场打篮球。晚上回到宿舍，我会认真复习当天的生词，听半个小时中文播客。十点半准时上床睡觉，今天又是充实而开心的一天。"
       },
       {
         id: 2,
         title: "周末去超市",
-        image: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?q=80&w=800", // Pasar raya buah-buahan
+        image: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?q=80&w=800",
         text: "每个星期六下午，王先生都会带全家人一起去家附近的大超市买东西。超市里人很多，货物非常整齐。他们先推着一辆购物车，来到新鲜水果区挑选了五个红苹果、一把香蕉和一个大西瓜。接着，王太太买了晚餐要用的新鲜牛肉和青菜。孩子们挑了两盒巧克力饼干。结账付款的时候，收银员热情地对他们说欢迎下次再来。一家人开开心心地提着大包小包走回家。"
       },
       {
         id: 3,
         title: "可爱的小猫",
-        image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=800", // Kucing comel putih
+        image: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=800",
         text: "李华家里养了一只白色的小猫，名字叫小白。小白长着一对明亮的大眼睛和长长的尾巴，走起路来轻悄悄的。它非常聪明可爱，每天早上只要听到闹钟响，就会跑进房间轻轻拍李华的脸。下午写作业的时候，小白喜欢乖乖躺在桌子旁边晒太阳看书。如果看到老鼠玩具，它就会飞快地扑上去玩很久。有了小白的陪伴，李华的生活充满了许多欢笑与温暖。"
       },
       {
         id: 4,
         title: "图书馆看书",
-        image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=800", // Perpustakaan tenang
+        image: "https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=800",
         text: "今天天气晴朗，微风习习。张明吃完午饭就来到了市中心的新图书馆。这里的藏书非常丰富，环境也很安静。进入大门后，张明找到了靠窗户的一张大木桌坐下。他借了一本关于中国历史与传统文化的有趣故事书。窗外阳光正好，洒在整齐的书架上。大家都在安静地自习看书，没有人出声打扰。张明沉浸在精彩的故事里，整整度过了一个充实而宁静的下午。"
       },
       {
         id: 5,
         title: "中国餐馆点菜",
-        image: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?q=80&w=800", // Masakan cina lazat
+        image: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?q=80&w=800",
         text: "昨天晚上是林朋的生日，他和几个好朋友相约去一家地道的中国餐馆吃晚餐。服务员很有礼貌地递上精美的菜单，并倒上清香的中国绿茶。林朋点了大家都爱吃的宫保鸡丁、西红柿炒鸡蛋和一碗热腾腾的酸辣汤。上菜速度很快，每一道菜色香味俱全，大家都赞口不绝。大家一边分享美味的佳肴，一边快乐地聊天庆祝。这顿丰盛的生日晚餐让每个人都感到十分幸福。"
       },
       {
         id: 6,
         title: "北京旅行记",
-        image: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=800", // Tembok besar Great Wall Beijing
+        image: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=800",
         text: "上个月放假的时候，陈红坐了四个小时的高铁去北京旅游。北京是一座既古老又现代化的美丽城市。第一天清晨，她去了天安门广场看庄严的升国旗仪式。第二天，她挑战登上了雄伟壮丽的长城。虽然爬到好汉坡时双腿感到很酸痛，但是站在高处俯瞰群山，风景壮美极了，她感到非常自豪。陈红在旅途中拍下了许多美丽珍贵的照片，并买了好吃的北京烤鸭给家人带回去。"
       },
       {
         id: 7,
         title: "学习做中国菜",
-        image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=800", // Memasak di dapur
+        image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=800",
         text: "今天是星期天，小敏决定在厨房向妈妈学习做一道经典的家常菜——西红柿炒鸡蛋。妈妈先教她把两个红红的西红柿洗干净切成均匀的小块，再把三个鸡蛋打进大碗里用力搅拌均匀。接着，在热锅里倒入花生油，先把金黄的鸡蛋炒熟盛出，再把西红柿炒出浓浓的香味，最后加一点盐和白糖混合翻炒。十分钟后，一盘香喷喷的炒菜就出锅了，全家人吃完都夸小敏手艺真棒。"
       },
       {
         id: 8,
         title: "突然下雨的午后",
-        image: "https://images.unsplash.com/photo-1519692933481-e162a57d6721?q=80&w=800", // Hujan & payung
+        image: "https://images.unsplash.com/photo-1519692933481-e162a57d6721?q=80&w=800",
         text: "周三下午放学的时候，原本晴朗的天空忽然乌云密布，接着刮起了大风，豆大的雨点倾盆而下。很多同学没有带雨伞，只能站在教学楼的走廊下焦急地等待雨停。小明带了一把很大的蓝色雨伞，看到同桌小华正发愁无法回家，便主动走上前邀请小华一起撑伞回家。一路上他们踩着地上的水花，说说笑笑互相照顾，衣服都没有被雨淋湿。相互帮助的友谊让冰冷的雨天变得格外温暖。"
       },
       {
         id: 9,
         title: "医生与健康生活",
-        image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800", // Doktor & gaya hidup sihat
+        image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800",
         text: "王医生是一名经验非常丰富的人民医院医生。他每天要给很多生病的患者看病检查。王医生常常温和地告诉年轻人，拥有健康的身体是人生最重要的财富。如果想要少生病，平时必须养成良好的生活规律：每天要按时吃早饭，尽量少吃高油高糖的外卖食品，坚持每天抽空快走运动半小时，并且坚决不要熬夜。听从王医生的专业建议后，许多病人都逐渐恢复了充沛的体力和精神活力。"
       },
       {
         id: 10,
         title: "四季的美丽",
-        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800", // Alam semula jadi 4 musim
+        image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800",
         text: "一年有四个美丽的季节，每个季节都有其独特的魅力与风采。春天大地万物复苏，公园里百花齐放，处处生机勃勃。夏天绿树成荫，大家喜欢去海边游泳，享受冰凉甘甜的冰淇淋。秋天是收获的黄金季节，满山的树叶变成金黄与火红，稻田里金浪滚滚。冬天北风呼呼吹过，天空中飘下洁白晶莹的雪花，孩子们欢快地堆雪人打雪仗。这如诗如画的大自然令人无比陶醉。"
       }
     ];
 
     let currentPage = 0;
+    let isFlipping = false;
 
     const storyImg = document.getElementById("storyImg");
     const chapterTag = document.getElementById("chapterTag");
@@ -457,80 +462,86 @@
     const prevBtn = document.getElementById("prevBtn");
     const nextBtn = document.getElementById("nextBtn");
     const dotsContainer = document.getElementById("dotsContainer");
-    const pageSpread = document.getElementById("pageSpread");
+    const flipSheet = document.getElementById("flipSheet");
     const audioBtn = document.getElementById("audioBtn");
 
-    // Bina penunjuk titik (Dots)
+    // Bina titik navigasi
     stories.forEach((_, idx) => {
       const dot = document.createElement("div");
       dot.className = `dot ${idx === 0 ? 'active' : ''}`;
-      dot.addEventListener("click", () => renderPage(idx));
+      dot.addEventListener("click", () => {
+        if (!isFlipping && idx !== currentPage) {
+          const dir = idx > currentPage ? 'forward' : 'backward';
+          flipToPage(idx, dir);
+        }
+      });
       dotsContainer.appendChild(dot);
     });
 
-    // Papar cerita
-    function renderPage(index) {
+    function updateContent(index) {
+      currentPage = index;
+      const s = stories[index];
+      chapterTag.textContent = `CHAPTER ${String(s.id).padStart(2, '0')}`;
+      storyTitle.textContent = s.title;
+      storyText.textContent = s.text;
+      storyImg.src = s.image;
+      pageNum.textContent = `Page ${index + 1} of ${stories.length}`;
+
+      prevBtn.disabled = (currentPage === 0);
+      nextBtn.disabled = (currentPage === stories.length - 1);
+
+      document.querySelectorAll(".dot").forEach((d, i) => {
+        d.classList.toggle("active", i === currentPage);
+      });
+    }
+
+    // Fungsi Selak Halaman 3D (Page-Flip Effect)
+    function flipToPage(targetIndex, direction) {
+      if (isFlipping || targetIndex < 0 || targetIndex >= stories.length) return;
+      isFlipping = true;
+
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
       }
 
-      currentPage = index;
-      const story = stories[index];
+      // Aktifkan animasi helaian kertas berputar
+      flipSheet.className = 'flip-sheet ' + (direction === 'forward' ? 'anim-forward' : 'anim-backward');
 
-      // Animasi lembut helaian kertas
-      pageSpread.style.opacity = "0.3";
-      pageSpread.style.transform = "translateY(5px)";
-
+      // Kemaskini teks pada pertengahan pusingan helaian
       setTimeout(() => {
-        chapterTag.textContent = `CHAPTER ${String(story.id).padStart(2, '0')}`;
-        storyTitle.textContent = story.title;
-        storyText.textContent = story.text;
-        storyImg.src = story.image;
-        pageNum.textContent = `Page ${index + 1} of ${stories.length}`;
+        updateContent(targetIndex);
+      }, 300);
 
-        prevBtn.disabled = (currentPage === 0);
-        nextBtn.disabled = (currentPage === stories.length - 1);
-
-        document.querySelectorAll(".dot").forEach((d, i) => {
-          d.classList.toggle("active", i === currentPage);
-        });
-
-        pageSpread.style.opacity = "1";
-        pageSpread.style.transform = "translateY(0)";
-      }, 150);
+      // Selesai animasi selak
+      setTimeout(() => {
+        flipSheet.className = 'flip-sheet';
+        isFlipping = false;
+      }, 650);
     }
 
-    // Fungsi audio sebutan Mandarin
+    // Suara Audio Sebutan Mandarin
     audioBtn.addEventListener("click", () => {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
-        const currentStory = stories[currentPage];
-        const utterance = new SpeechSynthesisUtterance(currentStory.title + "。" + currentStory.text);
+        const cur = stories[currentPage];
+        const utterance = new SpeechSynthesisUtterance(cur.title + "。" + cur.text);
         utterance.lang = 'zh-CN';
-        utterance.rate = 0.85; // Kelajuan bacaan santai
+        utterance.rate = 0.85;
         window.speechSynthesis.speak(utterance);
       }
     });
 
-    prevBtn.addEventListener("click", () => {
-      if (currentPage > 0) renderPage(currentPage - 1);
-    });
+    nextBtn.addEventListener("click", () => flipToPage(currentPage + 1, 'forward'));
+    prevBtn.addEventListener("click", () => flipToPage(currentPage - 1, 'backward'));
 
-    nextBtn.addEventListener("click", () => {
-      if (currentPage < stories.length - 1) renderPage(currentPage + 1);
-    });
-
-    // Sokongan kekunci papan kekunci (Arrow Left / Arrow Right)
+    // Papan kekunci (Arrow Left & Right)
     document.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowLeft" && currentPage > 0) {
-        renderPage(currentPage - 1);
-      } else if (e.key === "ArrowRight" && currentPage < stories.length - 1) {
-        renderPage(currentPage + 1);
-      }
+      if (e.key === "ArrowRight") flipToPage(currentPage + 1, 'forward');
+      if (e.key === "ArrowLeft") flipToPage(currentPage - 1, 'backward');
     });
 
-    // Mula paparan cerita pertama
-    renderPage(0);
+    // Mulakan muka surat pertama
+    updateContent(0);
   </script>
 </body>
 </html>
