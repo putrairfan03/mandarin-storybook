@@ -453,6 +453,50 @@
 
     let currentPage = 0;
     let isFlipping = false;
+    // Penjana Bunyi Selak Kertas Menggunakan Web Audio API
+    let audioCtx = null;
+    function playPageFlipSound() {
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        // Cipta white noise untuk geseran kertas
+        const bufferSize = audioCtx.sampleRate * 0.28; // Durasi ~0.28 saat
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+
+        // Penapis frekuensi (Filter) untuk efek geseran kertas lembut
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(950, audioCtx.currentTime);
+        filter.Q.setValueAtTime(1.2, audioCtx.currentTime);
+
+        // Kawalan kelantangan (Gain Envelope) - serapan bunyi kertas
+        const gainNode = audioCtx.createGain();
+        gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime + 0.06);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.28);
+
+        noise.connect(filter);
+        filter.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        noise.start();
+        noise.stop(audioCtx.currentTime + 0.28);
+      } catch (e) {
+        // Abaikan jika pelayar menyekat audio awal
+      }
+    }
 
     const storyImg = document.getElementById("storyImg");
     const chapterTag = document.getElementById("chapterTag");
@@ -495,8 +539,23 @@
       });
     }
 
-    // Fungsi Selak Halaman 3D (Page-Flip Effect)
+
+      // Fungsi Selak Halaman 3D (Page-Flip Effect)
     function flipToPage(targetIndex, direction) {
+      if (isFlipping || targetIndex < 0 || targetIndex >= stories.length) return;
+      isFlipping = true;
+
+      // === TAMBAH BARIS INI UNTUK MAIN BUNYI KERTAS ===
+      playPageFlipSound();
+      // ================================================
+
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+
+      // Aktifkan animasi helaian kertas berputar
+      flipSheet.className = 'flip-sheet ' + (direction === 'forward' ? 'anim-forward' : 'anim-backward');
+      // ...
       if (isFlipping || targetIndex < 0 || targetIndex >= stories.length) return;
       isFlipping = true;
 
