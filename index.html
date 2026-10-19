@@ -191,14 +191,20 @@
       letter-spacing: 2px;
     }
 
+    .audio-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .btn-audio {
       background: #e8f5e9;
       color: var(--text-title);
       border: 2px solid #a3b18a;
       border-radius: 50%;
-      width: 46px;
-      height: 46px;
-      font-size: 1.3rem;
+      width: 44px;
+      height: 44px;
+      font-size: 1.2rem;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -209,7 +215,11 @@
 
     .btn-audio:hover {
       background: #c8e6c9;
-      transform: scale(1.1) rotate(5deg);
+      transform: scale(1.08);
+    }
+
+    .btn-audio:active {
+      transform: scale(0.95);
     }
 
     .story-content {
@@ -418,7 +428,10 @@
           <div>
             <div class="story-header">
               <h2 class="story-title" id="storyTitle">...</h2>
-              <button class="btn-audio" id="audioBtn" title="Dengar sebutan audio">🔊</button>
+              <div class="audio-controls">
+                <button class="btn-audio" id="audioBtn" title="Mainkan sebutan audio">🔊</button>
+                <button class="btn-audio" id="pauseBtn" title="Jeda / Sambung sebutan audio" style="display: none;">⏸️</button>
+              </div>
             </div>
             <p class="story-content" id="storyText">...</p>
           </div>
@@ -448,21 +461,18 @@
       {
         id: 1,
         title: "我的一天",
-        // Pemandangan bilik pelajar anime yang tenang dengan tingkap terbuka ke alam menghijau
         image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=800",
         text: "我叫大卫，是一名大学生。我每天早上七点起床，先刷牙洗脸，然后去学校食堂吃早饭。我最喜欢吃鸡蛋和包子，喝一杯温牛奶。上午我有两节汉语课，老师教我们读生字和练习写汉字。下午下课后，我常常和同班同学一起在操场打篮球。晚上回到宿舍，我会认真复习当天的生词，听半个小时中文播客。十点半准时上床睡觉，今天又是充实而开心的一天。"
       },
       {
         id: 2,
         title: "周末去超市",
-        // Pekan anime dengan deretan kedai buah-buahan segar dan jalan berbatu
         image: "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=800",
         text: "每个星期六下午，王先生都会带全家人一起去家附近的大超市买东西。超市里人很多，货物非常整齐。他们先推着一辆购物车，来到新鲜水果区挑选了五个红苹果、一把香蕉和一个大西瓜。接着，王太太买了晚餐要用的新鲜牛肉和青菜。孩子们挑了两盒巧克力饼干。结账付款的时候，收银员热情地对他们说欢迎下次再来。一家人开开心心地提着大包小包走回家。"
       },
       {
         id: 3,
         title: "可爱的小猫",
-        // Kucing comel bersantai di ambang jendela kayu berlatarbelakangkan taman bunga
         image: "https://images.unsplash.com/photo-1533738363-b7f9aef128ce?q=80&w=800",
         text: "李华家里养了一只白色的小猫，名字叫小白。小白长着一对明亮的大眼睛和长长的尾巴，走起路来轻悄悄的。它非常聪明可爱，每天早上只要听到闹钟响，就会跑进房间轻轻拍李华的脸。下午写作业的时候，小白喜欢乖乖躺在桌子旁边晒太阳看书。如果看到老鼠玩具，它就会飞快地扑上去玩很久。有了小白的陪伴，李华的生活充满了许多欢笑与温暖。"
       },
@@ -475,42 +485,36 @@
       {
         id: 5,
         title: "中国餐馆点菜",
-        // Suasana kedai makan tradisional berlampu tanglung hangat (vibe Spirited Away)
         image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=800",
         text: "昨天晚上是林朋的生日，他和几个好朋友相约去一家地道的中国餐馆吃晚餐。服务员很有礼貌地递上精美的菜单，并倒上清香的中国绿茶。林朋点了大家都爱吃的宫保鸡丁、西红柿炒鸡蛋和一碗热腾腾的酸辣汤。上菜速度很快，每一道菜色香味俱全，大家都赞口不绝。大家一边分享美味的佳肴，一边快乐地聊天庆祝。这顿丰盛的生日晚餐让每个人都感到十分幸福。"
       },
       {
         id: 6,
         title: "北京旅行记",
-        // Gunung-ganang menghijau berkabus tebal dan laluan puncak yang megah
         image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800",
         text: "上个月放假的时候，陈红坐了四个小时的高铁去北京旅游。北京是一座既古老又现代化的美丽城市。第一天清晨，她去了天安门广场看庄严的升国旗仪式。第二天，她挑战登上了雄伟壮丽的长城。虽然爬到好汉坡时双腿感到很酸痛，但是站在高处俯瞰群山，风景壮美极了，她感到非常自豪。陈红在旅途中拍下了许多美丽珍贵的照片，并买了好吃的北京烤鸭给家人带回去。"
       },
       {
         id: 7,
         title: "学习做中国菜",
-        // Dapur desa yang rustic dan hangat dengan peralatan memasak tradisional
         image: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?q=80&w=800",
         text: "今天是星期天，小敏决定在厨房向妈妈学习做一道经典的家常菜——西红柿炒鸡蛋。妈妈先教她把两个红红的西红柿洗干净切成均匀的小块，再把三个鸡蛋打进大碗里用力搅拌均匀。接着，在热锅里倒入花生油，先把金黄的鸡蛋炒熟盛出，再把西红柿炒出浓浓的香味，最后加一点盐和白糖混合翻炒。十分钟后，一盘香喷喷的炒菜就出锅了，全家人吃完都夸小敏手艺真棒。"
       },
       {
         id: 8,
         title: "突然下雨的午后",
-        // Jalan lorong basah berhujan tenang dengan suasana hijau nostalgia (vibe My Neighbor Totoro)
         image: "https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?q=80&w=800",
         text: "周三下午放学的时候，原本晴朗的天空忽然乌云密布，接着刮起了大风，豆大的雨点倾盆而下。很多同学没有带雨伞，只能站在教学楼的走廊下焦急地等待雨停。小明带了一把很大的蓝色雨伞，看到同桌小华正发愁无法回家，便主动走上前邀请小华一起撑伞回家。一路上他们踩着地上的水花，说说笑笑互相照顾，衣服都没有被雨淋湿。相互帮助的友谊让冰冷的雨天变得格外温暖。"
       },
       {
         id: 9,
         title: "医生与健康生活",
-        // Rumah kayu damai di lereng bukit menghijau di bawah pokok rendang
         image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=800",
         text: "王医生是一名经验非常丰富的人民医院医生。他每天要给很多生病的患者看病检查。王医生常常温和地告诉年轻人，拥有健康的身体是人生最重要的财富。如果想要少生病，平时必须养成良好的生活规律：每天要按时吃早饭，尽量少吃高油高糖的外卖食品，坚持每天抽空快走运动半小时，并且坚决不要熬夜。听从王医生的专业建议后，许多病人都逐渐恢复了充沛的体力和精神活力。"
       },
       {
         id: 10,
         title: "四季的美丽",
-        // Padang rumput bunga liar di lereng bukit berangin dan awan gebu (vibe Howl's Moving Castle)
         image: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=800",
         text: "一年有四个美丽的季节，每个季节都有其独特的魅力与风采。春天大地万物复苏，公园里百花齐放，处处生机勃勃。夏天绿树成荫，大家喜欢去海边游泳，享受冰凉甘甜的冰淇淋。秋天是收获的黄金季节，满山的树叶变成金黄与火红，稻田里金浪滚滚。冬天北风呼呼吹过，天空中飘下洁白晶莹的雪花，孩子们欢快地堆雪人打雪仗。这如诗如画的大自然令人无比陶醉。"
       }
@@ -571,6 +575,19 @@
     const dotsContainer = document.getElementById("dotsContainer");
     const flipSheet = document.getElementById("flipSheet");
     const audioBtn = document.getElementById("audioBtn");
+    const pauseBtn = document.getElementById("pauseBtn");
+
+    // Fungsi Menghentikan / Mereset Suara
+    function stopSpeech() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      pauseBtn.style.display = "none";
+      pauseBtn.textContent = "⏸️";
+      pauseBtn.title = "Jeda sebutan audio";
+      audioBtn.textContent = "🔊";
+      audioBtn.title = "Mainkan sebutan audio";
+    }
 
     // Bina titik navigasi
     stories.forEach((_, idx) => {
@@ -608,10 +625,7 @@
       isFlipping = true;
 
       playPageFlipSound();
-
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
+      stopSpeech();
 
       // Aktifkan animasi helaian berputar
       flipSheet.className = 'flip-sheet ' + (direction === 'forward' ? 'anim-forward' : 'anim-backward');
@@ -628,15 +642,50 @@
       }, 650);
     }
 
-    // Suara Audio Sebutan Mandarin
+    // Suara Audio Sebutan Mandarin (Play / Ulang Dari Awal)
     audioBtn.addEventListener("click", () => {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const cur = stories[currentPage];
-        const utterance = new SpeechSynthesisUtterance(cur.title + "。" + cur.text);
-        utterance.lang = 'zh-CN';
-        utterance.rate = 0.85;
-        window.speechSynthesis.speak(utterance);
+      if (!('speechSynthesis' in window)) return;
+
+      window.speechSynthesis.cancel();
+
+      const cur = stories[currentPage];
+      const utterance = new SpeechSynthesisUtterance(cur.title + "。" + cur.text);
+      utterance.lang = 'zh-CN';
+      utterance.rate = 0.85;
+
+      utterance.onstart = () => {
+        pauseBtn.style.display = "flex";
+        pauseBtn.textContent = "⏸️";
+        pauseBtn.title = "Jeda sebutan audio";
+        audioBtn.textContent = "🔄";
+        audioBtn.title = "Ulang semula dari awal";
+      };
+
+      utterance.onend = () => {
+        stopSpeech();
+      };
+
+      utterance.onerror = () => {
+        stopSpeech();
+      };
+
+      window.speechSynthesis.speak(utterance);
+    });
+
+    // Butang Pause / Resume Audio
+    pauseBtn.addEventListener("click", () => {
+      if (!('speechSynthesis' in window)) return;
+
+      if (window.speechSynthesis.speaking) {
+        if (window.speechSynthesis.paused) {
+          window.speechSynthesis.resume();
+          pauseBtn.textContent = "⏸️";
+          pauseBtn.title = "Jeda sebutan audio";
+        } else {
+          window.speechSynthesis.pause();
+          pauseBtn.textContent = "▶️";
+          pauseBtn.title = "Sambung semula sebutan audio";
+        }
       }
     });
 
