@@ -354,7 +354,7 @@
           <div class="illustration-frame">
             <img id="storyImg" src="" alt="Story Visual">
           </div>
-          <div class="chapter-tag" id="chapterTag">CHAPTER 01</div>
+         <div class="chapter-tag" id="chapterTag">STORY 1</div>
         </div>
 
         <!-- Halaman Kanan (Teks Bersih) -->
@@ -481,7 +481,7 @@
     function updateContent(index) {
       currentPage = index;
       const s = stories[index];
-      chapterTag.textContent = `CHAPTER ${String(s.id).padStart(2, '0')}`;
+      chapterTag.textContent = `STORY ${s.id}`;
       storyTitle.textContent = s.title;
       storyText.textContent = s.text;
       storyImg.src = s.image;
